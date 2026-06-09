@@ -111,7 +111,7 @@ jobs:
           if [ "$ENABLE_HWCODEC" = "true" ]; then
             vcpkg_args=(install --triplet x64-windows-static --x-install-root="$VCPKG_ROOT/installed")
           else
-            vcpkg_args=(install opus libyuv libvpx --classic --overlay-ports=./res/vcpkg --triplet x64-windows-static --x-install-root="$VCPKG_ROOT/installed")
+            vcpkg_args=(install opus libyuv libvpx aom --classic --overlay-ports=./res/vcpkg --triplet x64-windows-static --x-install-root="$VCPKG_ROOT/installed")
           fi
 
           if ! "$VCPKG_ROOT/vcpkg" "${vcpkg_args[@]}"; then

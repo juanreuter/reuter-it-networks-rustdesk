@@ -44,6 +44,7 @@ pub mod cli;
 mod clipboard;
 #[cfg(not(any(target_os = "android", target_os = "ios", feature = "cli")))]
 pub mod core_main;
+mod client_customization;
 mod custom_server;
 mod lang;
 #[cfg(not(any(target_os = "android", target_os = "ios")))]

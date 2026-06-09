@@ -2085,6 +2085,7 @@ pub fn load_custom_client() {
     #[cfg(debug_assertions)]
     if let Ok(data) = std::fs::read_to_string("./custom.txt") {
         read_custom_client(data.trim());
+        crate::client_customization::apply();
         return;
     }
     let Some(path) = std::env::current_exe().map_or(None, |x| x.parent().map(|x| x.to_path_buf()))
@@ -2101,6 +2102,7 @@ pub fn load_custom_client() {
         };
         read_custom_client(&data.trim());
     }
+    crate::client_customization::apply();
 }
 
 fn read_custom_client_advanced_settings(

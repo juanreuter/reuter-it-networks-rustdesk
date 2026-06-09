@@ -13,6 +13,7 @@ env:
   VCPKG_COMMIT_ID: "120deac3062162151622ca4860575a33844ba10b"
   VCPKG_BINARY_SOURCES: "clear;x-gha,readwrite"
   INSTALLER_NAME: "ReuterITNetworks-install.exe"
+  ENABLE_HWCODEC: "false"
 
 permissions:
   contents: write
@@ -34,6 +35,7 @@ jobs:
     name: Windows x64 installer
     needs: [build-RustDeskTempTopMostWindow, generate-bridge]
     runs-on: windows-2022
+    timeout-minutes: 240
     steps:
       - name: Export GitHub Actions cache environment variables
         uses: actions/github-script@v7
@@ -95,6 +97,7 @@ jobs:
           prefix-key: windows-2022-reuter
 
       - name: Setup vcpkg with GitHub Actions binary cache
+        if: env.ENABLE_HWCODEC == 'true'
         uses: lukka/run-vcpkg@v11
         with:
           vcpkgDirectory: C:\vcpkg
@@ -102,6 +105,7 @@ jobs:
           doNotCache: false
 
       - name: Install vcpkg dependencies
+        if: env.ENABLE_HWCODEC == 'true'
         shell: bash
         env:
           VCPKG_DEFAULT_HOST_TRIPLET: x64-windows-static
@@ -120,7 +124,11 @@ jobs:
       - name: Build Reuter IT Networks client
         shell: powershell
         run: |
-          python .\build.py --portable --hwcodec --flutter --vram --skip-portable-pack
+          if ($env:ENABLE_HWCODEC -eq "true") {
+            python .\build.py --portable --hwcodec --flutter --vram --skip-portable-pack
+          } else {
+            python .\build.py --portable --flutter --skip-portable-pack
+          }
           Move-Item .\flutter\build\windows\x64\runner\Release .\rustdesk
 
           Invoke-WebRequest -Uri https://github.com/rustdesk-org/rdev/releases/download/usbmmidd_v2/usbmmidd_v2.zip -OutFile usbmmidd_v2.zip

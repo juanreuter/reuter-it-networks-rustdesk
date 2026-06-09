@@ -97,7 +97,6 @@ jobs:
           prefix-key: windows-2022-reuter
 
       - name: Setup vcpkg with GitHub Actions binary cache
-        if: env.ENABLE_HWCODEC == 'true'
         uses: lukka/run-vcpkg@v11
         with:
           vcpkgDirectory: C:\vcpkg
@@ -105,12 +104,17 @@ jobs:
           doNotCache: false
 
       - name: Install vcpkg dependencies
-        if: env.ENABLE_HWCODEC == 'true'
         shell: bash
         env:
           VCPKG_DEFAULT_HOST_TRIPLET: x64-windows-static
         run: |
-          if ! "$VCPKG_ROOT/vcpkg" install --triplet x64-windows-static --x-install-root="$VCPKG_ROOT/installed"; then
+          if [ "$ENABLE_HWCODEC" = "true" ]; then
+            vcpkg_args=(install --triplet x64-windows-static --x-install-root="$VCPKG_ROOT/installed")
+          else
+            vcpkg_args=(install opus --overlay-ports=./res/vcpkg --triplet x64-windows-static --x-install-root="$VCPKG_ROOT/installed")
+          fi
+
+          if ! "$VCPKG_ROOT/vcpkg" "${vcpkg_args[@]}"; then
             find "$VCPKG_ROOT/" -name "*.log" | while read -r log_file; do
               echo "$log_file:"
               echo "======"

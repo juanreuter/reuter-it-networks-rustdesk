@@ -1,7 +1,7 @@
 use hbb_common::config::{self, keys};
 
 const CUSTOM_APP_NAME: Option<&str> = Some("Reuter IT Networks");
-const CUSTOM_ID_SERVER: &str = "186.123.149.250";
+const CUSTOM_ID_SERVER: &str = "186.123.149.250:21116";
 const CUSTOM_RELAY_SERVER: &str = "186.123.149.250:21117";
 const CUSTOM_API_SERVER: &str = "";
 const CUSTOM_SERVER_KEY: &str = "N8Rz1kh+Hz318VzI2q4l7qUccsCm6kOXAyfL3Biv+Qg=";

@@ -151,7 +151,7 @@ jobs:
       - name: Download topmost window artifact
         uses: actions/download-artifact@v4
         with:
-          name: topmostwindow-artifacts
+          name: topmostwindow-artifacts-x64
           path: ./rustdesk
 
       - name: Build installer executable

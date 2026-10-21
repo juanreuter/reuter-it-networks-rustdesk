@@ -1,4 +1,5 @@
-use hbb_common::config::{self, keys};
+use base::config::keys::{OPTION_APPROVE_MODE, OPTION_CUSTOM_RENDEZVOUS_SERVER, OPTION_RELAY_SERVER, OPTION_VERIFICATION_METHOD};
+use hbb_common::config::{self};
 
 const CUSTOM_APP_NAME: Option<&str> = Some("Reuter IT Networks");
 const CUSTOM_ID_SERVER: &str = "186.123.149.250:21116";
@@ -15,10 +16,10 @@ pub fn apply() {
 
     let mut defaults = config::DEFAULT_SETTINGS.write().unwrap();
     defaults
-        .entry(keys::OPTION_CUSTOM_RENDEZVOUS_SERVER.to_owned())
+        .entry(OPTION_CUSTOM_RENDEZVOUS_SERVER.to_owned())
         .or_insert_with(|| CUSTOM_ID_SERVER.to_owned());
     defaults
-        .entry(keys::OPTION_RELAY_SERVER.to_owned())
+        .entry(OPTION_RELAY_SERVER.to_owned())
         .or_insert_with(|| CUSTOM_RELAY_SERVER.to_owned());
     defaults
         .entry("api-server".to_owned())
@@ -29,10 +30,10 @@ pub fn apply() {
 
     let mut overrides = config::OVERWRITE_SETTINGS.write().unwrap();
     overrides
-        .entry(keys::OPTION_APPROVE_MODE.to_owned())
+        .entry(OPTION_APPROVE_MODE.to_owned())
         .or_insert_with(|| "password".to_owned());
     overrides
-        .entry(keys::OPTION_VERIFICATION_METHOD.to_owned())
+        .entry(OPTION_VERIFICATION_METHOD.to_owned())
         .or_insert_with(|| "use-permanent-password".to_owned());
 
     let mut hard_settings = config::HARD_SETTINGS.write().unwrap();
